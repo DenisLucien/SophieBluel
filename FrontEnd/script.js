@@ -161,6 +161,7 @@ async function addListenerFilters(tAllWorks){
     console.log(copieWorks)
     console.log("Les doublons supprimes");
     const categories =suppDoublonsTab(copieWorks);
+    // const categories=callCatgr();
     console.log("categories :"+categories[0]+"cacecez");
     displayFilters(categories);
     addListenerFilters(tabWorks);
