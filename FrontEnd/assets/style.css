@@ -137,9 +137,41 @@ li:hover {
 	width: 100%;
 
 }
+.filters{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap:10px;
+	margin:30px 0;
+}
+.filterButton{
+	border-radius: 60px;
+	background-color: white;
+	border: solid 1px #1D6154;
+	text-align: center;
+	padding: 10px;
+	font-size: 16px;
+	font-weight: 700;
+	color: #1D6154;
+}
+.new{
+	background-color:#1D6154 ;
+	color:white;
+	border-radius: 60px;
+	border: solid 1px #1D6154;
+	text-align: center;
+	padding: 10px;
+	font-size: 16px;
+	font-weight: 700;
+}
+.filterButton:hover{
+	background-color: #1D6154;
+	color:white;
+}
 #contact {
 	width: 50%;
-margin: auto;
+	margin: auto;
 }
 #contact > * {
 	text-align: center;
