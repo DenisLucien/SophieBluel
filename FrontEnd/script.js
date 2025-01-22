@@ -14,15 +14,32 @@ async function callCatgr() {
 }
 
 function deleteWorks() {
-  const galerie = document.querySelector(".gallery");
-  // console.log("innerHtml : "+galerie.innerHTML);
-  // console.log("par ID : "+  portfolio.innerHTML);
-  galerie.innerHTML = "";
+  const gallerytab = document.querySelectorAll(".gallery");
+  for (let a = 0; a < gallerytab.length; a++) {
+    const gallery = gallerytab[a];
+    gallery.innerHTML = "";
+  }
 }
 
 async function displayWorks(tablWorks) {
   deleteWorks();
-  const gallery = document.querySelector(".gallery");
+  const gallerytab = document.querySelectorAll(".gallery");
+
+  console.log("gallery : " + gallerytab);
+  for (let a = 0; a < gallerytab.length; a++) {
+    const gallery = gallerytab[a];
+    for (let i = 0; i < tablWorks.length; i++) {
+      const workElement = document.createElement("figure");
+      const imageElement = document.createElement("img");
+      const titreElement = document.createElement("figcaption");
+      imageElement.src = tablWorks[i].imageUrl;
+      imageElement.alt = "";
+      titreElement.innerText = tablWorks[i].title;
+      gallery.appendChild(workElement);
+      workElement.appendChild(imageElement);
+      workElement.appendChild(titreElement);
+    }
+  }
 
   for (let i = 0; i < tablWorks.length; i++) {
     const workElement = document.createElement("figure");
@@ -219,9 +236,9 @@ function addEventListenerLogout() {
 // UTILISATION D'UNE FONCTION ANONYME AUTO INVOQUEE POUR UTILISER AWAIT DANS
 // NOTRE CODE, ELLE COMPORTE LE CODE A EXECUTER
 (async function () {
-  console.log(document.querySelector(".modaleGal").className);
-  document.querySelector(".modaleGal").className = "modaleGal modalon";
-  console.log(document.querySelector(".modalon").className);
+  //   console.log(document.querySelector(".modaleGal").className);
+  //   document.querySelector(".modaleGal").className = "modaleGal modalon";
+  //   console.log(document.querySelector(".modalon").className);
 
   adaptLoginLogout();
   addEventListenerLogout();
