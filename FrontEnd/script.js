@@ -41,17 +41,17 @@ async function displayWorks(tablWorks) {
     }
   }
 
-  for (let i = 0; i < tablWorks.length; i++) {
-    const workElement = document.createElement("figure");
-    const imageElement = document.createElement("img");
-    const titreElement = document.createElement("figcaption");
-    imageElement.src = tablWorks[i].imageUrl;
-    imageElement.alt = "";
-    titreElement.innerText = tablWorks[i].title;
-    gallery.appendChild(workElement);
-    workElement.appendChild(imageElement);
-    workElement.appendChild(titreElement);
-  }
+  //   for (let i = 0; i < tablWorks.length; i++) {
+  //     const workElement = document.createElement("figure");
+  //     const imageElement = document.createElement("img");
+  //     const titreElement = document.createElement("figcaption");
+  //     imageElement.src = tablWorks[i].imageUrl;
+  //     imageElement.alt = "";
+  //     titreElement.innerText = tablWorks[i].title;
+  //     gallery.appendChild(workElement);
+  //     workElement.appendChild(imageElement);
+  //     workElement.appendChild(titreElement);
+  //   }
 }
 
 // function testlistener(){
