@@ -130,6 +130,8 @@ async function addListenerFilters(tAllWorks) {
   }
 }
 
+//Ajout d'un listener au bouton submit de la page login pour effectuer les
+//requêtes, le stockage, les messages d'erreurs etc...
 function addListenerLogin() {
   var el = document.querySelector("main form input[type='submit']");
 
@@ -166,7 +168,11 @@ function addListenerLogin() {
       const data = await rep.json();
       localStorage.setItem("logintoken", data.token);
       console.log("Connexion réussie");
+      //   document.querySelector("nav a").innerText = "logout";
       window.location.href = "index.html";
+      console.log("move to index");
+
+      //   document.querySelector("nav a").innerText = "logout";
       document.querySelector(".message404 p").className = "hidden";
     }
     if (rep.status === 404) {
@@ -176,31 +182,69 @@ function addListenerLogin() {
   });
 }
 
+//Fonction qui adapte l'affichage en fonction de si l'on est connecté ou non
+//ATTENTION: ELLE AJOUTE EGALEMENT LE LISTENER AU BOUTON EDIT QUI AFFICHE LA MODALE
+function adaptLoginLogout() {
+  if (
+    localStorage.getItem("logintoken") === "" ||
+    localStorage.getItem("logintoken") === null
+  ) {
+    if (document.body.className !== "loginbody") {
+      document.querySelector(".logbanner").className = "off";
+      console.log("logedout  logbanner off");
+    }
+    document.querySelector("nav a").innerText = "login";
+  } else {
+    if (document.body.className !== "loginbody") {
+      document.querySelector(".logbanner").className = "on";
+      console.log("logedin logbanner on");
+    }
+    document.querySelector("nav a").innerText = "logout";
+  }
+  console.log("localSto:" + localStorage.getItem("logintoken"));
+}
+
+function addEventListenerLogout() {
+  const boutonLog = document.querySelector("nav a");
+  boutonLog.addEventListener("click", async function (event) {
+    if (document.querySelector("nav a").innerText === "logout") {
+      event.preventDefault();
+      window.location.href = "index.html";
+      localStorage.removeItem("logintoken");
+      //   console.log(localStorage.getItem("logintoken"));
+    }
+  });
+}
+
 // UTILISATION D'UNE FONCTION ANONYME AUTO INVOQUEE POUR UTILISER AWAIT DANS
 // NOTRE CODE, ELLE COMPORTE LE CODE A EXECUTER
 (async function () {
-  // console.log("url 1: "+document.body.classList);
-  // console.log((document.body.className===""));
+  console.log(document.querySelector(".modaleGal").className);
+  document.querySelector(".modaleGal").className = "modaleGal modalon";
+  console.log(document.querySelector(".modalon").className);
+
+  adaptLoginLogout();
+  addEventListenerLogout();
   if (document.body.className === "loginbody") {
     addListenerLogin();
   } else {
+    // console.log(document.querySelector(".logbanner").classList);
     const tabWorks = await callWorks();
+    console.log("Tableau Works :");
+    console.log(tabWorks);
     console.log("url : " + document.body.classList);
     const tabCategories = await callCatgr();
-    console.log(tabCategories);
-    console.log(tabWorks);
-    console.log(tabWorks[0].category.name);
     await deleteWorks();
     await displayWorks(tabWorks);
-    // testlistener();
     const copieWorks = tabWorks.map((tabWorks) => tabWorks.category.name);
     console.log(copieWorks);
     console.log("Les doublons supprimes");
     const categories = suppDoublonsTab(copieWorks);
     // const categories=callCatgr();
-    console.log("categories :" + categories[0] + "cacecez");
     displayFilters(categories);
     addListenerFilters(tabWorks);
     delDupes(copieWorks);
+    // console.log(document.querySelector(".logbanner").classList[1]);
+    console.log(document.body.className !== "loginbody");
   }
 })();

@@ -129,6 +129,12 @@ table {
 }
 /** end reset css**/
 body {
+  margin: auto;
+  font-family: "Work Sans";
+  font-size: 14px;
+}
+
+.divBody {
   max-width: 1140px;
   margin: auto;
   font-family: "Work Sans";
@@ -139,6 +145,31 @@ header {
   justify-content: space-between;
   margin: 50px 0;
 }
+.off {
+  display: none;
+}
+.on {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100vw;
+  height: 59px;
+  font-weight: 400;
+  background-color: black;
+  /* margin-left: -250px; */
+}
+.fa-pen-to-square {
+  font-size: 16px;
+  color: white;
+}
+.on p {
+  color: white;
+  font-family: "Work Sans";
+  font-size: 16px;
+}
+
 section {
   margin: 50px 0;
 }
@@ -364,4 +395,29 @@ footer nav ul {
 
 .displayed {
   display: flex;
+}
+
+/* PARTIE DE LA MODALE */
+
+.divBody {
+  filter: brightness(0.8);
+}
+
+Body {
+  background: #0000004d;
+}
+
+.modaleGal {
+  display: flex;
+  width: 630px;
+  height: 688px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  justify-content: center;
+  align-items: center;
+  z-index: 1; /* Met la modale au premier plan (la surélève de 1)*/
+  border-radius: 30px;
 }
