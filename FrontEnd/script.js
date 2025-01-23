@@ -20,7 +20,7 @@ function deleteWorks() {
     gallery.innerHTML = "";
   }
 }
-
+// Fonction qui display les works des différentes galeries
 async function displayWorks(tablWorks) {
   deleteWorks();
   const gallerytab = document.querySelectorAll(".gallery");
@@ -32,26 +32,22 @@ async function displayWorks(tablWorks) {
       const workElement = document.createElement("figure");
       const imageElement = document.createElement("img");
       const titreElement = document.createElement("figcaption");
+      const trashIcon = document.createElement("i");
       imageElement.src = tablWorks[i].imageUrl;
       imageElement.alt = "";
       titreElement.innerText = tablWorks[i].title;
+      trashIcon.className = "fa-solid fa-trash-can";
       gallery.appendChild(workElement);
       workElement.appendChild(imageElement);
-      workElement.appendChild(titreElement);
+
+      if (gallerytab[a].className === "gallery modale") {
+        workElement.appendChild(trashIcon);
+      }
+      if (gallerytab[a].className === "gallery") {
+        workElement.appendChild(titreElement);
+      }
     }
   }
-
-  //   for (let i = 0; i < tablWorks.length; i++) {
-  //     const workElement = document.createElement("figure");
-  //     const imageElement = document.createElement("img");
-  //     const titreElement = document.createElement("figcaption");
-  //     imageElement.src = tablWorks[i].imageUrl;
-  //     imageElement.alt = "";
-  //     titreElement.innerText = tablWorks[i].title;
-  //     gallery.appendChild(workElement);
-  //     workElement.appendChild(imageElement);
-  //     workElement.appendChild(titreElement);
-  //   }
 }
 
 // function testlistener(){
@@ -98,12 +94,10 @@ function suppDoublonsTab(tab) {
 // Une fonction qui retire les doublons bien plus courte
 function delDupes(tab) {
   var deduped = Array.from(new Set(tab));
-  // console.log(tab);
-  // console.log(deduped);
   return deduped;
 }
 
-function displayFilters(tCat) {
+function createFilters(tCat) {
   const filtersRef = document.querySelector(".filters");
   const oneFilter = document.createElement("button");
   oneFilter.setAttribute("class", "filterButton");
@@ -199,22 +193,65 @@ function addListenerLogin() {
   });
 }
 
+function addListenerModale() {
+  document
+    .querySelector(".fa-xmark")
+    .addEventListener("click", function (event) {
+      document.querySelector(".modalon").className = "modaleGal off";
+      document.querySelector(".body").className = "body bodyOff";
+      document.querySelector(".divBody").className = "divBody divBodyOff";
+    });
+
+  document
+    .querySelector(".modalon")
+    .addEventListener("click", function (event) {
+      document.querySelector(".modalon").className = "modaleGal off";
+      document.querySelector(".body").className = "body bodyOff";
+      document.querySelector(".divBody").className = "divBody divBodyOff";
+    });
+}
+
+function addListenerEditBtn() {
+  const bannerEditDiv = document.querySelector(".on");
+  const projetEditDiv = document.querySelector(".mesprojets");
+
+  bannerEditDiv.addEventListener("click", function (event) {
+    document.querySelector(".modaleGal").className = ".modaleGal modalon";
+    addListenerModale();
+    document.querySelector(".body").className = "body bodyOn";
+    document.querySelector(".divBody").className = "divBody divBodyOn";
+  });
+  projetEditDiv.addEventListener("click", function (event) {
+    document.querySelector(".modaleGal").className = ".modaleGal modalon";
+    addListenerModale();
+    document.querySelector(".body").className = "body bodyOn";
+    document.querySelector(".divBody").className = "divBody divBodyOn";
+  });
+}
+
 //Fonction qui adapte l'affichage en fonction de si l'on est connecté ou non
 //ATTENTION: ELLE AJOUTE EGALEMENT LE LISTENER AU BOUTON EDIT QUI AFFICHE LA MODALE
 function adaptLoginLogout() {
+  //Si on est déconnecté
   if (
     localStorage.getItem("logintoken") === "" ||
     localStorage.getItem("logintoken") === null
   ) {
     if (document.body.className !== "loginbody") {
       document.querySelector(".logbanner").className = "off";
+      document.querySelector(".editPrj").className = "off";
+      document.querySelector(".filters").className = "filters filterson";
       console.log("logedout  logbanner off");
     }
     document.querySelector("nav a").innerText = "login";
-  } else {
+  }
+  //Si on est connecté
+  else {
     if (document.body.className !== "loginbody") {
       document.querySelector(".logbanner").className = "on";
+      document.querySelector(".filters").className = "filters off";
       console.log("logedin logbanner on");
+      addListenerEditBtn();
     }
     document.querySelector("nav a").innerText = "logout";
   }
@@ -258,7 +295,7 @@ function addEventListenerLogout() {
     console.log("Les doublons supprimes");
     const categories = suppDoublonsTab(copieWorks);
     // const categories=callCatgr();
-    displayFilters(categories);
+    createFilters(categories);
     addListenerFilters(tabWorks);
     delDupes(copieWorks);
     // console.log(document.querySelector(".logbanner").classList[1]);

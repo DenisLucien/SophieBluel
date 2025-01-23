@@ -241,7 +241,7 @@ li:hover {
 }
 #portfolio h2 {
   text-align: center;
-  margin-bottom: 1em;
+  /*  */
 }
 .gallery {
   width: 100%;
@@ -251,16 +251,34 @@ li:hover {
   grid-row-gap: 20px;
 }
 
+.mesprojets {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 100px 0;
+}
+.mesprojets h2 {
+  padding: 0;
+  margin: 0;
+}
+
+.mesprojets .fa-pen-to-square {
+  color: black;
+  font-size: 14px;
+  padding: 0 10px 0 30px;
+}
+
 .gallery img {
   width: 100%;
 }
-.filters {
+.filterson {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin: 30px 0;
+  margin-bottom: 100px;
 }
 .filterButton {
   border-radius: 60px;
@@ -399,15 +417,15 @@ footer nav ul {
 
 /* PARTIE DE LA MODALE */
 
-.divBody {
+.divBodyOn {
   filter: brightness(0.8);
 }
 
-Body {
+.bodyOn {
   background: #0000004d;
 }
 
-.modaleGal {
+.modalon {
   display: flex;
   flex-direction: column;
   padding: 30px;
@@ -419,7 +437,7 @@ Body {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #fff;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   z-index: 1; /* Met la modale au premier plan (la surélève de 1)*/
   border-radius: 10px;
@@ -434,21 +452,61 @@ Body {
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
   color: black;
-  margin-bottom: 20px;
+  text-align: center;
 }
 
-.modaleGal .gallery {
+.modalon .gallery {
   width: 80%;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+  padding-bottom: 60px;
+  border-bottom: 1px solid #b3b3b3;
 }
 
 .xMark {
-  align-self: flex-end;
+  align-self: flex-start;
+  gap: 0;
 }
 
 .xMark i {
   font-size: 24px;
+}
+.btnAddPhoto {
+  width: 237px;
+  height: 36px;
+  color: #fff;
+  background-color: #1d6154;
+  border: none;
+  border-radius: 60px;
+  font-family: Syne;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 16.8px;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+}
+
+.modale figure {
+  position: relative;
+}
+
+.modale i {
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  color: white;
+  background-color: black;
+  padding: 5px;
+  font-size: 11px;
+}
+.top {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 50px;
 }
