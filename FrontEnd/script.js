@@ -42,6 +42,27 @@ async function displayWorks(tablWorks) {
 
       if (gallerytab[a].className === "gallery modale") {
         workElement.appendChild(trashIcon);
+        trashIcon.addEventListener("click", async function (event) {
+          console.log(tablWorks[i].id + " " + tablWorks[i].title);
+          console.log(`http://localhost:5678/api/works/${tablWorks[i].id}`);
+          const reponse = await fetch(
+            `http://localhost:5678/api/works/${tablWorks[i].id}`,
+            {
+              method: "DELETE",
+              headers: {
+                Accept: "*/*",
+                Authorization: `Bearer ${localStorage.getItem("logintoken")}`,
+              },
+            }
+          );
+
+          if (reponse.ok) {
+            tablWorks.splice(i, 1);
+            console.log("Delete Reussi !");
+            displayWorks(tablWorks);
+            window.localStorage.setItem("tabWorks", JSON.stringify(tablWorks));
+          }
+        });
       }
       if (gallerytab[a].className === "gallery") {
         workElement.appendChild(titreElement);
@@ -159,15 +180,11 @@ function addListenerLogin() {
     console.log(document.getElementById("password").value);
 
     console.log(chargeUtile);
-
-    // console.log("charge util"+chargeUtile.email);
-    // console.log(chargeUtile.password);
-
     const rep = await fetch("http://localhost:5678/api/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
+        accept: "application/json",
       },
       body: JSON.stringify(chargeUtile),
     });
@@ -177,7 +194,9 @@ function addListenerLogin() {
       console.log(rep);
       console.log(rep.status);
       const data = await rep.json();
-      localStorage.setItem("logintoken", data.token);
+      await localStorage.setItem("logintoken", data.token);
+      console.log("le local storage");
+      console.log(localStorage);
       console.log("Connexion réussie");
       //   document.querySelector("nav a").innerText = "logout";
       window.location.href = "index.html";
@@ -185,29 +204,74 @@ function addListenerLogin() {
 
       //   document.querySelector("nav a").innerText = "logout";
       document.querySelector(".message404 p").className = "hidden";
-    }
-    if (rep.status === 404) {
+    } else {
       document.querySelector(".message404 p").className = "displayed";
     }
-    console.log(rep.status === 404);
   });
 }
 
-function addListenerModale() {
+function addListenerModaleAdd() {
   document
-    .querySelector(".fa-xmark")
+    .querySelector(".xMarkPhoto")
     .addEventListener("click", function (event) {
-      document.querySelector(".modalon").className = "modaleGal off";
-      document.querySelector(".body").className = "body bodyOff";
-      document.querySelector(".divBody").className = "divBody divBodyOff";
+      document.querySelector(".addPhoto").className = "addPhoto off";
     });
 
   document
-    .querySelector(".modalon")
+    .querySelector(".fa-arrow-left")
     .addEventListener("click", function (event) {
-      document.querySelector(".modalon").className = "modaleGal off";
+      document.querySelector(".addPhoto").className = "addPhoto off";
+    });
+
+  document.addEventListener("click", function (event) {
+    if (
+      document.querySelector(".fa-arrow-left").contains(event.target) ===
+        false &&
+      document.querySelector(".xMarkPhoto").contains(event.target) === false &&
+      document.querySelector(".modaleGal").contains(event.target) === false &&
+      document.querySelector(".addPhoto").contains(event.target) === false &&
+      document.querySelector(".editPrj").contains(event.target) === false &&
+      document.querySelector(".logbanner").contains(event.target) === false &&
+      document.querySelector(".addPhoto").className === "addPhoto addPhotoOn" &&
+      document.querySelector(".modaleGal").className === "modaleGal modalon"
+    ) {
+      console.log("documents add");
+      document.querySelector(".addPhoto").className = "addPhoto off";
+    }
+  });
+  document
+    .querySelector(".btnAddPhoto")
+    .addEventListener("click", async function (event) {
+      document.querySelector(".addPhoto").className = "addPhoto addPhotoOn";
+    });
+}
+
+function addListenerModale() {
+  document.querySelector(".xMark").addEventListener("click", function (event) {
+    document.querySelector(".modaleGal").className = "modaleGal off";
+    document.querySelector(".body").className = "body bodyOff";
+    document.querySelector(".divBody").className = "divBody divBodyOff";
+  });
+
+  document.addEventListener("click", function (event) {
+    if (
+      document.querySelector(".modaleGal").contains(event.target) === false &&
+      document.querySelector(".editPrj").contains(event.target) === false &&
+      document.querySelector(".logbanner").contains(event.target) === false &&
+      document.querySelector(".addPhoto").className === "addPhoto off"
+    ) {
+      console.log("Off by document conditions");
+      document.querySelector(".modaleGal").className = "modaleGal off";
       document.querySelector(".body").className = "body bodyOff";
       document.querySelector(".divBody").className = "divBody divBodyOff";
+    }
+  });
+  document
+    .querySelector(".btnAddPhoto")
+    .addEventListener("click", async function (event) {
+      document.querySelector(".addPhoto").className = "addPhoto addPhotoOn";
+      console.log("listeners modale add chargés");
+      addListenerModaleAdd();
     });
 }
 
@@ -216,13 +280,13 @@ function addListenerEditBtn() {
   const projetEditDiv = document.querySelector(".mesprojets");
 
   bannerEditDiv.addEventListener("click", function (event) {
-    document.querySelector(".modaleGal").className = ".modaleGal modalon";
+    document.querySelector(".modaleGal").className = "modaleGal modalon";
     addListenerModale();
     document.querySelector(".body").className = "body bodyOn";
     document.querySelector(".divBody").className = "divBody divBodyOn";
   });
   projetEditDiv.addEventListener("click", function (event) {
-    document.querySelector(".modaleGal").className = ".modaleGal modalon";
+    document.querySelector(".modaleGal").className = "modaleGal modalon";
     addListenerModale();
     document.querySelector(".body").className = "body bodyOn";
     document.querySelector(".divBody").className = "divBody divBodyOn";
@@ -248,7 +312,7 @@ function adaptLoginLogout() {
   //Si on est connecté
   else {
     if (document.body.className !== "loginbody") {
-      document.querySelector(".logbanner").className = "on";
+      document.querySelector(".logbanner").className = "logbanner on";
       document.querySelector(".filters").className = "filters off";
       console.log("logedin logbanner on");
       addListenerEditBtn();
@@ -273,18 +337,17 @@ function addEventListenerLogout() {
 // UTILISATION D'UNE FONCTION ANONYME AUTO INVOQUEE POUR UTILISER AWAIT DANS
 // NOTRE CODE, ELLE COMPORTE LE CODE A EXECUTER
 (async function () {
-  //   console.log(document.querySelector(".modaleGal").className);
-  //   document.querySelector(".modaleGal").className = "modaleGal modalon";
-  //   console.log(document.querySelector(".modalon").className);
-
+  // addListenerModaleAdd();
   adaptLoginLogout();
   addEventListenerLogout();
   if (document.body.className === "loginbody") {
     addListenerLogin();
   } else {
-    // console.log(document.querySelector(".logbanner").classList);
     const tabWorks = await callWorks();
+    localStorage.setItem("tabWorks", JSON.stringify(tabWorks));
+    console.log(localStorage.getItem("tabWorks"));
     console.log("Tableau Works :");
+    console.log("t 11" + localStorage.getItem("tabWorks"));
     console.log(tabWorks);
     console.log("url : " + document.body.classList);
     const tabCategories = await callCatgr();
@@ -298,7 +361,5 @@ function addEventListenerLogout() {
     createFilters(categories);
     addListenerFilters(tabWorks);
     delDupes(copieWorks);
-    // console.log(document.querySelector(".logbanner").classList[1]);
-    console.log(document.body.className !== "loginbody");
   }
 })();

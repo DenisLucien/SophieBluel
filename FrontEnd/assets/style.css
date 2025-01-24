@@ -493,6 +493,17 @@ footer nav ul {
   position: relative;
 }
 
+.fa-xmark {
+  position: absolute;
+  top: 5%;
+  right: 5%;
+}
+
+.fa-arrow-left {
+  position: absolute;
+  top: 5%;
+  left: 5%;
+}
 .modale i {
   position: absolute;
   top: 5%;
@@ -509,4 +520,131 @@ footer nav ul {
   justify-content: space-between;
   align-items: flex-end;
   height: 50px;
+}
+/* Partie Ajouter photo de la modale  */
+
+.addPhotoOn {
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  gap: 20px;
+  width: 630px;
+  height: 688px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  justify-content: space-evenly;
+  align-items: center;
+  z-index: 1; /* Met la modale au premier plan (la surélève de 1)*/
+  border-radius: 10px;
+}
+
+.lineone {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.lineone h2 {
+  font-family: Work Sans;
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 30.5px;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: black;
+  text-align: center;
+}
+/* .addPhotoBlock {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+} */
+.ajouterphoto {
+  width: 420px;
+  height: 169px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  background: #e8f1f6;
+}
+
+.fa-image {
+  font-size: 70px;
+  color: #b9c5cc;
+}
+
+.btnAjouterPhoto {
+  width: 173px;
+  height: 36px;
+  top: 881px;
+  left: 633px;
+  gap: 0px;
+  border-radius: 50px;
+  background: #cbd6dc;
+  color: #306685;
+  font-family: Work Sans;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16.42px;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+
+  border: none;
+}
+
+.addPhoto label {
+  font-family: "Work sans", serif;
+  font-size: 14px;
+  align-self: flex-start;
+}
+
+.addPhoto input,
+select {
+  border: none;
+  width: 420px;
+  height: 51px;
+  box-shadow: 0px 4px 14px 0px #00000017;
+}
+
+.labelinput {
+  display: flex;
+  width: 420px;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  padding-bottom: 30px;
+  gap: 0;
+  border-bottom: 1px solid #b3b3b3;
+}
+
+.labelinput label {
+  padding-bottom: 10px;
+}
+.labelinput input,
+select {
+  margin-bottom: 30px;
+}
+
+.btnValiderAddPhoto {
+  width: 237px;
+  height: 36px;
+  color: #fff;
+  background: #a7a7a7;
+
+  border: none;
+  border-radius: 60px;
+  font-family: Syne;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 16.8px;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
 }

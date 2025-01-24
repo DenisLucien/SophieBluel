@@ -30,12 +30,42 @@
         <span> </span>
         <h2>Galerie photo</h2>
         <div class="xMark">
-          <i class="fa-solid fa-xmark"></i>
+          <i class="fa-solid fa-xmark xMark"></i>
         </div>
       </div>
 
       <div class="gallery modale"></div>
       <button class="btnAddPhoto" type="button">Ajouter une Photo</button>
+    </div>
+
+    <div class="addPhoto off">
+      <div class="lineone">
+        <i class="fa-solid fa-arrow-left"></i>
+        <h2>Galerie photo</h2>
+        <div class="xMarkPhoto">
+          <i class="fa-solid fa-xmark xMarkphoto"></i>
+        </div>
+      </div>
+
+      <div class="ajouterphoto">
+        <i class="fa-regular fa-image"></i>
+        <button class="btnAjouterPhoto" type="button">+Ajouter Photo</button>
+        <p>jpg, png : 4mo max</p>
+      </div>
+
+      <div class="labelinput">
+        <label for="titre">Titre</label>
+        <input type="text" name="titre" id="titre" />
+        <label for="categorie">Catégorie</label>
+        <select type="categorie" name="categorie" id="categorie">
+          <option value=""></option>
+          <option value="Objets">Objets</option>
+          <option value="Appartements">Appartements</option>
+          <option value="Hotels&Restaurants">Hotels & Restaurants</option>
+        </select>
+      </div>
+
+      <button class="btnValiderAddPhoto" type="button">Valider</button>
     </div>
 
     <div class="divBody">
