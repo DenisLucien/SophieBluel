@@ -215,7 +215,6 @@ function addListenerModaleAdd() {
     .querySelector(".xMarkPhoto")
     .addEventListener("click", function (event) {
       setTimeout(() => {
-        console.log("Delayed for 1 second.");
         document.querySelector(".addPhoto").className = "addPhoto off";
         document.querySelector(".modaleGal").className = "modaleGal off";
         document.querySelector(".body").className = "body bodyOff";
@@ -227,7 +226,6 @@ function addListenerModaleAdd() {
     .querySelector(".fa-arrow-left")
     .addEventListener("click", function (event) {
       setTimeout(() => {
-        console.log("Delayed for 1 second.");
         document.querySelector(".addPhoto").className = "addPhoto off";
       }, "200");
     });
@@ -246,7 +244,6 @@ function addListenerModaleAdd() {
     ) {
       console.log("documents add");
       setTimeout(() => {
-        console.log("Delayed for 1 second.");
         document.querySelector(".addPhoto").className = "addPhoto off";
         document.querySelector(".modaleGal").className = "modaleGal off";
         document.querySelector(".body").className = "body bodyOff";
@@ -288,6 +285,27 @@ function addListenerModale() {
       console.log("listeners modale add chargés");
       addListenerModaleAdd();
     });
+
+  document
+    .querySelector(".btnAjouterPhoto")
+    .addEventListener("onchange", function (event) {
+      newPhoto.src = document.querySelector(".btnAjouterPhoto").value;
+      console.log(document.querySelector(".btnAjouterPhoto").value);
+      console.log("url changée");
+    });
+}
+
+//Fonction lors de l'upload de l'image qui affiche la prévisualisation
+function theOnchange(event) {
+  let ajouterphoto = document.querySelector(".ajouterphoto");
+  let newPhoto = document.createElement("img");
+  let lasource = URL.createObjectURL(event.target.files[0]);
+  const linputfile = document.getElementById("btnAjouterPhoto");
+  ajouterphoto.innerHTML = "";
+  newPhoto.src = lasource;
+  console.log(linputfile.value);
+  ajouterphoto.appendChild(newPhoto);
+  ajouterphoto.appendChild(linputfile);
 }
 
 function addListenerEditBtn() {

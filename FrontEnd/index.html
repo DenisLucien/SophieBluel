@@ -49,7 +49,17 @@
 
       <div class="ajouterphoto">
         <i class="fa-regular fa-image"></i>
-        <button class="btnAjouterPhoto" type="button">+Ajouter Photo</button>
+        <label class="btn btn-primary" for="btnAjouterPhoto">
+          + Ajouter Photo<input
+            type="file"
+            class="btnAjouterPhoto"
+            id="btnAjouterPhoto"
+            name="btnAjouterPhoto"
+            accept="image/png, image/jpeg"
+            display="none"
+            onchange="theOnchange(event)"
+          />
+        </label>
         <p>jpg, png : 4mo max</p>
       </div>
 

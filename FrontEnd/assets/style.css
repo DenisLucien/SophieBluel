@@ -472,6 +472,7 @@ footer nav ul {
 
 .xMark i {
   font-size: 24px;
+  padding: 5px;
 }
 .btnAddPhoto {
   width: 237px;
@@ -569,9 +570,14 @@ footer nav ul {
   height: 169px;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center;
+  gap: 10px;
   align-items: center;
   background: #e8f1f6;
+}
+.ajouterphoto img {
+  object-fit: cover;
+  height: 100%;
 }
 
 .fa-image {
@@ -579,7 +585,17 @@ footer nav ul {
   color: #b9c5cc;
 }
 
-.btnAjouterPhoto {
+input#btnAjouterPhoto {
+  display: none;
+}
+
+label.btn.btn-primary {
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  align-items: center;
+}
+.btn-primary {
   width: 173px;
   height: 36px;
   top: 881px;
@@ -647,4 +663,14 @@ select {
   text-align: center;
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
+}
+
+.fa-arrow-left {
+  font-size: 24px;
+  padding: 5px;
+}
+
+.xMarkphoto {
+  font-size: 24px;
+  padding: 5px;
 }
