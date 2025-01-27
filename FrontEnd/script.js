@@ -25,7 +25,7 @@ async function displayWorks(tablWorks) {
   deleteWorks();
   const gallerytab = document.querySelectorAll(".gallery");
 
-  console.log("gallery : " + gallerytab);
+  // console.log("gallery : " + gallerytab);
   for (let a = 0; a < gallerytab.length; a++) {
     const gallery = gallerytab[a];
     for (let i = 0; i < tablWorks.length; i++) {
@@ -43,8 +43,8 @@ async function displayWorks(tablWorks) {
       if (gallerytab[a].className === "gallery modale") {
         workElement.appendChild(trashIcon);
         trashIcon.addEventListener("click", async function (event) {
-          console.log(tablWorks[i].id + " " + tablWorks[i].title);
-          console.log(`http://localhost:5678/api/works/${tablWorks[i].id}`);
+          // console.log(tablWorks[i].id + " " + tablWorks[i].title);
+          // console.log(`http://localhost:5678/api/works/${tablWorks[i].id}`);
           const reponse = await fetch(
             `http://localhost:5678/api/works/${tablWorks[i].id}`,
             {
@@ -58,7 +58,7 @@ async function displayWorks(tablWorks) {
 
           if (reponse.ok) {
             tablWorks.splice(i, 1);
-            console.log("Delete Reussi !");
+            // console.log("Delete Reussi !");
             displayWorks(tablWorks);
             window.localStorage.setItem("tabWorks", JSON.stringify(tablWorks));
           }
@@ -138,8 +138,8 @@ async function addListenerFilters(tAllWorks) {
   const copieAllWorks = tAllWorks;
   const tFiltersDiv = document.querySelectorAll(".filters button");
   const tWorksCat = tAllWorks.map((tAllWorks) => tAllWorks.category.name);
-  console.log("boutons: ");
-  console.log(tFiltersDiv);
+  // console.log("boutons: ");
+  // console.log(tFiltersDiv);
   for (let i = 0; i < tFiltersDiv.length; i++) {
     tFiltersDiv[i].addEventListener("click", async function (event) {
       for (let i = 0; i < tFiltersDiv.length; i++) {
@@ -176,10 +176,10 @@ function addListenerLogin() {
       password: pwd,
     };
 
-    console.log(document.getElementById("email").value);
-    console.log(document.getElementById("password").value);
+    // console.log(document.getElementById("email").value);
+    // console.log(document.getElementById("password").value);
 
-    console.log(chargeUtile);
+    // console.log(chargeUtile);
     const rep = await fetch("http://localhost:5678/api/users/login", {
       method: "POST",
       headers: {
@@ -190,17 +190,17 @@ function addListenerLogin() {
     });
 
     if (rep.ok) {
-      console.log("la rep :");
-      console.log(rep);
-      console.log(rep.status);
+      // console.log("la rep :");
+      // console.log(rep);
+      // console.log(rep.status);
       const data = await rep.json();
       await localStorage.setItem("logintoken", data.token);
-      console.log("le local storage");
-      console.log(localStorage);
-      console.log("Connexion réussie");
+      // console.log("le local storage");
+      // console.log(localStorage);
+      // console.log("Connexion réussie");
       //   document.querySelector("nav a").innerText = "logout";
       window.location.href = "index.html";
-      console.log("move to index");
+      // console.log("move to index");
 
       //   document.querySelector("nav a").innerText = "logout";
       document.querySelector(".message404 p").className = "hidden";
@@ -214,13 +214,22 @@ function addListenerModaleAdd() {
   document
     .querySelector(".xMarkPhoto")
     .addEventListener("click", function (event) {
-      document.querySelector(".addPhoto").className = "addPhoto off";
+      setTimeout(() => {
+        console.log("Delayed for 1 second.");
+        document.querySelector(".addPhoto").className = "addPhoto off";
+        document.querySelector(".modaleGal").className = "modaleGal off";
+        document.querySelector(".body").className = "body bodyOff";
+        document.querySelector(".divBody").className = "divBody divBodyOff";
+      }, "200");
     });
 
   document
     .querySelector(".fa-arrow-left")
     .addEventListener("click", function (event) {
-      document.querySelector(".addPhoto").className = "addPhoto off";
+      setTimeout(() => {
+        console.log("Delayed for 1 second.");
+        document.querySelector(".addPhoto").className = "addPhoto off";
+      }, "200");
     });
 
   document.addEventListener("click", function (event) {
@@ -236,14 +245,20 @@ function addListenerModaleAdd() {
       document.querySelector(".modaleGal").className === "modaleGal modalon"
     ) {
       console.log("documents add");
-      document.querySelector(".addPhoto").className = "addPhoto off";
+      setTimeout(() => {
+        console.log("Delayed for 1 second.");
+        document.querySelector(".addPhoto").className = "addPhoto off";
+        document.querySelector(".modaleGal").className = "modaleGal off";
+        document.querySelector(".body").className = "body bodyOff";
+        document.querySelector(".divBody").className = "divBody divBodyOff";
+      }, "200");
     }
   });
-  document
-    .querySelector(".btnAddPhoto")
-    .addEventListener("click", async function (event) {
-      document.querySelector(".addPhoto").className = "addPhoto addPhotoOn";
-    });
+  // document
+  //   .querySelector(".btnAddPhoto")
+  //   .addEventListener("click", async function (event) {
+  //     document.querySelector(".addPhoto").className = "addPhoto addPhotoOn";
+  //   });
 }
 
 function addListenerModale() {
