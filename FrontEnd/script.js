@@ -1,4 +1,10 @@
 // DEFINITION DES FONCTIONS DE NOTRE CODE
+
+var ajouterphotohtml;
+var lesCategories;
+var disWorks;
+var tabWorks;
+
 async function callWorks() {
   const tWorks = await fetch("http://localhost:5678/api/works").then((works) =>
     works.json()
@@ -11,6 +17,29 @@ async function callCatgr() {
     (ctgr) => ctgr.json()
   );
   return ctgr;
+}
+
+function ctgrIntoIdCtgr(ctgr) {
+  let id = 1;
+  for (let i = 0; i < lesCategories.length; i++) {
+    if (ctgr === lesCategories[i].name) {
+      id = i + 1;
+    }
+  }
+  return id;
+}
+
+function ctgrIdIntoObject(ctgrId) {
+  var ctgrObj;
+  for (let i = 0; i < lesCategories.length; i++) {
+    if (ctgrId === lesCategories[i].id) {
+      ctgrObj = {
+        id: ctgrId,
+        name: lesCategories[i].name,
+      };
+    }
+  }
+  return ctgrObj;
 }
 
 function deleteWorks() {
@@ -57,10 +86,15 @@ async function displayWorks(tablWorks) {
           );
 
           if (reponse.ok) {
+            console.log("delete reussi");
             tablWorks.splice(i, 1);
-            // console.log("Delete Reussi !");
-            displayWorks(tablWorks);
+            disWorks = tablWorks;
             window.localStorage.setItem("tabWorks", JSON.stringify(tablWorks));
+
+            setTimeout(() => {
+              console.log("displaying works after del");
+              displayWorks(tablWorks);
+            }, "200");
           }
         });
       }
@@ -248,14 +282,63 @@ function addListenerModaleAdd() {
         document.querySelector(".modaleGal").className = "modaleGal off";
         document.querySelector(".body").className = "body bodyOff";
         document.querySelector(".divBody").className = "divBody divBodyOff";
+        document.querySelector(".ajouterphoto").innerHTML = ajouterphotohtml;
+        document.querySelector(".btnValiderAddPhoto").style.background =
+          "#A7A7A7";
       }, "200");
     }
   });
-  // document
-  //   .querySelector(".btnAddPhoto")
-  //   .addEventListener("click", async function (event) {
-  //     document.querySelector(".addPhoto").className = "addPhoto addPhotoOn";
-  //   });
+
+  document
+    .querySelector(".btnValiderAddPhoto")
+    .addEventListener("click", async function (event) {
+      var fileImage = document.getElementById("btnAjouterPhoto").files[0];
+      // console.log(fileImage + fileImage.src);
+
+      // console.log(fReader);
+      console.log("dsdqsd");
+      console.log(document.getElementById("btnAjouterPhoto").files[0]);
+      if (
+        document.querySelector(".ajouterphoto img") !== null &&
+        document.getElementById("titre").value !== "" &&
+        document.getElementById("categorie").value !== ""
+      ) {
+        // const imgsrc = document.querySelector(".ajouterphoto img").src;
+        const letitre = document.getElementById("titre").value;
+        const lacategorie = ctgrIntoIdCtgr(
+          document.getElementById("categorie").value
+        );
+        const chargeU = new FormData();
+        chargeU.append("image", fileImage);
+        chargeU.append("title", letitre);
+        chargeU.append("category", lacategorie);
+        console.log(chargeU);
+        const reponse = await fetch(`http://localhost:5678/api/works`, {
+          method: "POST",
+          headers: {
+            // "Content-Type": "multipart/form-data",
+            // accept: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("logintoken")}`,
+          },
+          body: chargeU,
+        });
+        if (reponse.ok) {
+          console.log("upload Ok");
+          disWorks = await callWorks();
+          console.log(disWorks);
+          setTimeout(() => {
+            console.log("displaying works");
+            displayWorks(disWorks);
+            console.log(document.querySelector(".addPhoto").className);
+            document.querySelector(".addPhoto").className = "addPhoto off";
+            document.querySelector(".ajouterphoto").innerHTML =
+              ajouterphotohtml;
+            document.querySelector(".btnValiderAddPhoto").style.background =
+              "#A7A7A7";
+          }, "200");
+        }
+      }
+    });
 }
 
 function addListenerModale() {
@@ -299,13 +382,17 @@ function addListenerModale() {
 function theOnchange(event) {
   let ajouterphoto = document.querySelector(".ajouterphoto");
   let newPhoto = document.createElement("img");
-  let lasource = URL.createObjectURL(event.target.files[0]);
+  var fReader = new FileReader();
+  fReader.readAsDataURL(document.getElementById("btnAjouterPhoto").files[0]);
+  fReader.onloadend = function (event) {
+    newPhoto.src = event.target.result;
+  };
   const linputfile = document.getElementById("btnAjouterPhoto");
   ajouterphoto.innerHTML = "";
-  newPhoto.src = lasource;
   console.log(linputfile.value);
   ajouterphoto.appendChild(newPhoto);
   ajouterphoto.appendChild(linputfile);
+  document.querySelector(".btnValiderAddPhoto").style.background = "#1d6154";
 }
 
 function addListenerEditBtn() {
@@ -370,29 +457,26 @@ function addEventListenerLogout() {
 // UTILISATION D'UNE FONCTION ANONYME AUTO INVOQUEE POUR UTILISER AWAIT DANS
 // NOTRE CODE, ELLE COMPORTE LE CODE A EXECUTER
 (async function () {
+  lesCategories = await callCatgr();
   // addListenerModaleAdd();
   adaptLoginLogout();
   addEventListenerLogout();
   if (document.body.className === "loginbody") {
     addListenerLogin();
   } else {
-    const tabWorks = await callWorks();
+    ajouterphotohtml = document.querySelector(".ajouterphoto").innerHTML;
+    tabWorks = await callWorks();
+    disWorks = tabWorks;
+    console.log(disWorks);
     localStorage.setItem("tabWorks", JSON.stringify(tabWorks));
-    console.log(localStorage.getItem("tabWorks"));
-    console.log("Tableau Works :");
-    console.log("t 11" + localStorage.getItem("tabWorks"));
-    console.log(tabWorks);
-    console.log("url : " + document.body.classList);
     const tabCategories = await callCatgr();
+    const catname = tabCategories.map((tabCategories) => tabCategories.name);
     await deleteWorks();
     await displayWorks(tabWorks);
     const copieWorks = tabWorks.map((tabWorks) => tabWorks.category.name);
-    console.log(copieWorks);
-    console.log("Les doublons supprimes");
-    const categories = suppDoublonsTab(copieWorks);
-    // const categories=callCatgr();
-    createFilters(categories);
+    // const categories = suppDoublonsTab(copieWorks);
+    createFilters(catname);
     addListenerFilters(tabWorks);
-    delDupes(copieWorks);
+    // delDupes(copieWorks);
   }
 })();
