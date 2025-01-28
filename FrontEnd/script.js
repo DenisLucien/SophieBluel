@@ -5,6 +5,12 @@ var lesCategories;
 var disWorks;
 var tabWorks;
 
+//Une variable d'état du btnValiderAddPhoto
+//Comme ce n'est pas un bouton submit il peut y avoir
+// plusieurs eventListeners activés lors d'un clique
+//Ce qui envoie plusieurs formulaires
+var btnValiderWasOff = true;
+
 async function callWorks() {
   const tWorks = await fetch("http://localhost:5678/api/works").then((works) =>
     works.json()
@@ -53,8 +59,6 @@ function deleteWorks() {
 async function displayWorks(tablWorks) {
   deleteWorks();
   const gallerytab = document.querySelectorAll(".gallery");
-
-  // console.log("gallery : " + gallerytab);
   for (let a = 0; a < gallerytab.length; a++) {
     const gallery = gallerytab[a];
     for (let i = 0; i < tablWorks.length; i++) {
@@ -72,8 +76,6 @@ async function displayWorks(tablWorks) {
       if (gallerytab[a].className === "gallery modale") {
         workElement.appendChild(trashIcon);
         trashIcon.addEventListener("click", async function (event) {
-          // console.log(tablWorks[i].id + " " + tablWorks[i].title);
-          // console.log(`http://localhost:5678/api/works/${tablWorks[i].id}`);
           const reponse = await fetch(
             `http://localhost:5678/api/works/${tablWorks[i].id}`,
             {
@@ -86,13 +88,11 @@ async function displayWorks(tablWorks) {
           );
 
           if (reponse.ok) {
-            console.log("delete reussi");
             tablWorks.splice(i, 1);
             disWorks = tablWorks;
             window.localStorage.setItem("tabWorks", JSON.stringify(tablWorks));
 
             setTimeout(() => {
-              console.log("displaying works after del");
               displayWorks(tablWorks);
             }, "200");
           }
@@ -105,47 +105,6 @@ async function displayWorks(tablWorks) {
   }
 }
 
-// function testlistener(){
-//     const galerie=document.querySelector(".gallery");
-//     galerie.addEventListener("click",function(event) {
-//         deleteWorks();
-//     })
-
-// }
-
-function suppDoublonsTab(tab) {
-  let boolTab = [];
-  let doublonsSupprimes = [];
-  if (tab !== null) {
-    // CREATION D'UN TABLEAU BOOLEEN INITALISE A FALSE QUI NOUS INDIQUERA LES DOUBLONS
-    let copieTab = tab;
-    boolTab.length = tab.length;
-
-    for (let i = 0; i < boolTab.length; i++) {
-      boolTab[i] = false;
-    }
-
-    for (let i = 0; i < copieTab.length; i++) {
-      if (boolTab[i] === false) {
-        doublonsSupprimes.push(copieTab[i]);
-      }
-      for (let j = 0; j < copieTab.length; j++) {
-        if (
-          boolTab[i] === false &&
-          boolTab[copieTab.length - 1 - j] === false
-        ) {
-          if (
-            copieTab[copieTab.length - 1 - j] === copieTab[i] &&
-            i !== copieTab.length - 1 - j
-          ) {
-            boolTab[copieTab.length - 1 - j] = true;
-          }
-        }
-      }
-    }
-  }
-  return doublonsSupprimes;
-}
 // Une fonction qui retire les doublons bien plus courte
 function delDupes(tab) {
   var deduped = Array.from(new Set(tab));
@@ -172,17 +131,12 @@ async function addListenerFilters(tAllWorks) {
   const copieAllWorks = tAllWorks;
   const tFiltersDiv = document.querySelectorAll(".filters button");
   const tWorksCat = tAllWorks.map((tAllWorks) => tAllWorks.category.name);
-  // console.log("boutons: ");
-  // console.log(tFiltersDiv);
   for (let i = 0; i < tFiltersDiv.length; i++) {
     tFiltersDiv[i].addEventListener("click", async function (event) {
       for (let i = 0; i < tFiltersDiv.length; i++) {
         tFiltersDiv[i].setAttribute("class", "filterButton");
-        // console.log( "classlist = "+tFiltersDiv[i].classList);
       }
-      // console.log("before change :"+event.target);
       event.target.classList.replace("filterButton", "new");
-      // console.log("after change : "+event.target.classList);
       if (event.target.innerText === "Tous") {
         displayWorks(copieAllWorks);
       } else {
@@ -210,10 +164,6 @@ function addListenerLogin() {
       password: pwd,
     };
 
-    // console.log(document.getElementById("email").value);
-    // console.log(document.getElementById("password").value);
-
-    // console.log(chargeUtile);
     const rep = await fetch("http://localhost:5678/api/users/login", {
       method: "POST",
       headers: {
@@ -224,19 +174,11 @@ function addListenerLogin() {
     });
 
     if (rep.ok) {
-      // console.log("la rep :");
-      // console.log(rep);
-      // console.log(rep.status);
       const data = await rep.json();
       await localStorage.setItem("logintoken", data.token);
-      // console.log("le local storage");
-      // console.log(localStorage);
-      // console.log("Connexion réussie");
-      //   document.querySelector("nav a").innerText = "logout";
-      window.location.href = "index.html";
-      // console.log("move to index");
-
-      //   document.querySelector("nav a").innerText = "logout";
+      setTimeout(() => {
+        window.location.href = "index.html"; // ou window.location.assign()
+      }, 100);
       document.querySelector(".message404 p").className = "hidden";
     } else {
       document.querySelector(".message404 p").className = "displayed";
@@ -244,6 +186,8 @@ function addListenerLogin() {
   });
 }
 
+// FONCTION QUI MET LES LISTENER POUR FERMER / ENVOYER LES REQUETES / AFFICHER LES ERREURS
+// DE LA MODALE SUR LAQUELLE ON PEUT AJOUTER UNE PHOTO
 function addListenerModaleAdd() {
   document
     .querySelector(".xMarkPhoto")
@@ -276,7 +220,6 @@ function addListenerModaleAdd() {
       document.querySelector(".addPhoto").className === "addPhoto addPhotoOn" &&
       document.querySelector(".modaleGal").className === "modaleGal modalon"
     ) {
-      console.log("documents add");
       setTimeout(() => {
         document.querySelector(".addPhoto").className = "addPhoto off";
         document.querySelector(".modaleGal").className = "modaleGal off";
@@ -292,54 +235,48 @@ function addListenerModaleAdd() {
   document
     .querySelector(".btnValiderAddPhoto")
     .addEventListener("click", async function (event) {
-      var fileImage = document.getElementById("btnAjouterPhoto").files[0];
-      // console.log(fileImage + fileImage.src);
-
-      // console.log(fReader);
-      console.log("dsdqsd");
-      console.log(document.getElementById("btnAjouterPhoto").files[0]);
-      if (
-        document.querySelector(".ajouterphoto img") !== null &&
-        document.getElementById("titre").value !== "" &&
-        document.getElementById("categorie").value !== ""
-      ) {
-        // const imgsrc = document.querySelector(".ajouterphoto img").src;
-        const letitre = document.getElementById("titre").value;
-        const lacategorie = ctgrIntoIdCtgr(
-          document.getElementById("categorie").value
-        );
-        const chargeU = new FormData();
-        chargeU.append("image", fileImage);
-        chargeU.append("title", letitre);
-        chargeU.append("category", lacategorie);
-        console.log(chargeU);
-        const reponse = await fetch(`http://localhost:5678/api/works`, {
-          method: "POST",
-          headers: {
-            // "Content-Type": "multipart/form-data",
-            // accept: "application/json",
-            Authorization: `Bearer ${localStorage.getItem("logintoken")}`,
-          },
-          body: chargeU,
-        });
-        if (reponse.ok) {
-          console.log("upload Ok");
-          disWorks = await callWorks();
-          console.log(disWorks);
-          setTimeout(() => {
-            console.log("displaying works");
-            displayWorks(disWorks);
-            console.log(document.querySelector(".addPhoto").className);
-            document.querySelector(".addPhoto").className = "addPhoto off";
-            document.querySelector(".ajouterphoto").innerHTML =
-              ajouterphotohtml;
-            document.querySelector(".btnValiderAddPhoto").style.background =
-              "#A7A7A7";
-          }, "200");
+      if (btnValiderWasOff) {
+        btnValiderWasOff = false;
+        var fileImage = document.getElementById("btnAjouterPhoto").files[0];
+        if (
+          document.querySelector(".ajouterphoto img") !== null &&
+          document.getElementById("titre").value !== "" &&
+          document.getElementById("categorie").value !== ""
+        ) {
+          const letitre = document.getElementById("titre").value;
+          const lacategorie = ctgrIntoIdCtgr(
+            document.getElementById("categorie").value
+          );
+          const chargeU = new FormData();
+          chargeU.append("image", fileImage);
+          chargeU.append("title", letitre);
+          chargeU.append("category", lacategorie);
+          const reponse = await fetch(`http://localhost:5678/api/works`, {
+            method: "POST",
+            headers: {
+              // "Content-Type": "multipart/form-data",
+              // accept: "application/json",
+              Authorization: `Bearer ${localStorage.getItem("logintoken")}`,
+            },
+            body: chargeU,
+          });
+          if (reponse.ok) {
+            disWorks = await callWorks();
+            setTimeout(() => {
+              displayWorks(disWorks);
+              document.querySelector(".addPhoto").className = "addPhoto off";
+              document.querySelector(".ajouterphoto").innerHTML =
+                ajouterphotohtml;
+              document.querySelector(".btnValiderAddPhoto").style.background =
+                "#A7A7A7";
+              btnValiderWasOff = true;
+            }, "200");
+          }
         }
       }
     });
 }
+// FIN DE LA FONCTION addListenerModaleAdd
 
 function addListenerModale() {
   document.querySelector(".xMark").addEventListener("click", function (event) {
@@ -355,7 +292,6 @@ function addListenerModale() {
       document.querySelector(".logbanner").contains(event.target) === false &&
       document.querySelector(".addPhoto").className === "addPhoto off"
     ) {
-      console.log("Off by document conditions");
       document.querySelector(".modaleGal").className = "modaleGal off";
       document.querySelector(".body").className = "body bodyOff";
       document.querySelector(".divBody").className = "divBody divBodyOff";
@@ -365,7 +301,6 @@ function addListenerModale() {
     .querySelector(".btnAddPhoto")
     .addEventListener("click", async function (event) {
       document.querySelector(".addPhoto").className = "addPhoto addPhotoOn";
-      console.log("listeners modale add chargés");
       addListenerModaleAdd();
     });
 
@@ -373,26 +308,32 @@ function addListenerModale() {
     .querySelector(".btnAjouterPhoto")
     .addEventListener("onchange", function (event) {
       newPhoto.src = document.querySelector(".btnAjouterPhoto").value;
-      console.log(document.querySelector(".btnAjouterPhoto").value);
-      console.log("url changée");
     });
 }
 
 //Fonction lors de l'upload de l'image qui affiche la prévisualisation
 function theOnchange(event) {
-  let ajouterphoto = document.querySelector(".ajouterphoto");
-  let newPhoto = document.createElement("img");
-  var fReader = new FileReader();
-  fReader.readAsDataURL(document.getElementById("btnAjouterPhoto").files[0]);
-  fReader.onloadend = function (event) {
-    newPhoto.src = event.target.result;
-  };
-  const linputfile = document.getElementById("btnAjouterPhoto");
-  ajouterphoto.innerHTML = "";
-  console.log(linputfile.value);
-  ajouterphoto.appendChild(newPhoto);
-  ajouterphoto.appendChild(linputfile);
-  document.querySelector(".btnValiderAddPhoto").style.background = "#1d6154";
+  if (
+    document.getElementById("btnAjouterPhoto").files[0].size <
+    4 * 1024 * 1024
+  ) {
+    let ajouterphoto = document.querySelector(".ajouterphoto");
+    let newPhoto = document.createElement("img");
+    var fReader = new FileReader();
+    fReader.readAsDataURL(document.getElementById("btnAjouterPhoto").files[0]);
+    fReader.onloadend = function (event) {
+      newPhoto.src = event.target.result;
+    };
+    const linputfile = document.getElementById("btnAjouterPhoto");
+    ajouterphoto.innerHTML = "";
+    ajouterphoto.appendChild(newPhoto);
+    ajouterphoto.appendChild(linputfile);
+    document.querySelector(".btnValiderAddPhoto").style.background = "#1d6154";
+  } else {
+    document.querySelector(".ajouterphoto p").innerText =
+      "ATTENTION : jpg, png : taille 4mo max !";
+    document.querySelector(".ajouterphoto p").style.color = "rgb(104, 13, 13)";
+  }
 }
 
 function addListenerEditBtn() {
@@ -425,7 +366,6 @@ function adaptLoginLogout() {
       document.querySelector(".logbanner").className = "off";
       document.querySelector(".editPrj").className = "off";
       document.querySelector(".filters").className = "filters filterson";
-      console.log("logedout  logbanner off");
     }
     document.querySelector("nav a").innerText = "login";
   }
@@ -434,12 +374,10 @@ function adaptLoginLogout() {
     if (document.body.className !== "loginbody") {
       document.querySelector(".logbanner").className = "logbanner on";
       document.querySelector(".filters").className = "filters off";
-      console.log("logedin logbanner on");
       addListenerEditBtn();
     }
     document.querySelector("nav a").innerText = "logout";
   }
-  console.log("localSto:" + localStorage.getItem("logintoken"));
 }
 
 function addEventListenerLogout() {
@@ -449,7 +387,6 @@ function addEventListenerLogout() {
       event.preventDefault();
       window.location.href = "index.html";
       localStorage.removeItem("logintoken");
-      //   console.log(localStorage.getItem("logintoken"));
     }
   });
 }
@@ -458,7 +395,6 @@ function addEventListenerLogout() {
 // NOTRE CODE, ELLE COMPORTE LE CODE A EXECUTER
 (async function () {
   lesCategories = await callCatgr();
-  // addListenerModaleAdd();
   adaptLoginLogout();
   addEventListenerLogout();
   if (document.body.className === "loginbody") {
@@ -467,16 +403,13 @@ function addEventListenerLogout() {
     ajouterphotohtml = document.querySelector(".ajouterphoto").innerHTML;
     tabWorks = await callWorks();
     disWorks = tabWorks;
-    console.log(disWorks);
     localStorage.setItem("tabWorks", JSON.stringify(tabWorks));
     const tabCategories = await callCatgr();
     const catname = tabCategories.map((tabCategories) => tabCategories.name);
     await deleteWorks();
     await displayWorks(tabWorks);
     const copieWorks = tabWorks.map((tabWorks) => tabWorks.category.name);
-    // const categories = suppDoublonsTab(copieWorks);
     createFilters(catname);
     addListenerFilters(tabWorks);
-    // delDupes(copieWorks);
   }
 })();

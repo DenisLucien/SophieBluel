@@ -251,6 +251,10 @@ li:hover {
   grid-row-gap: 20px;
 }
 
+a{
+  color:rgb(104, 13, 13);
+}
+
 .mesprojets {
   display: flex;
   flex-direction: row;
@@ -271,6 +275,8 @@ li:hover {
 
 .gallery img {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .filterson {
   display: flex;
