@@ -186,12 +186,11 @@ function addListenerLogin() {
   });
 }
 
-// FONCTION QUI MET LES LISTENER POUR FERMER / ENVOYER LES REQUETES / AFFICHER LES ERREURS
-// DE LA MODALE SUR LAQUELLE ON PEUT AJOUTER UNE PHOTO
-function addListenerModaleAdd() {
+function addCloseReturnListenersModaleAdd() {
   document
     .querySelector(".xMarkPhoto")
     .addEventListener("click", function (event) {
+      //Fermeture Modale add sur click bouton en croix
       setTimeout(() => {
         document.querySelector(".addPhoto").className = "addPhoto off";
         document.querySelector(".modaleGal").className = "modaleGal off";
@@ -209,6 +208,7 @@ function addListenerModaleAdd() {
     });
 
   document.addEventListener("click", function (event) {
+    // IF CLICK IS OUT OF THE OVERLAY
     if (
       document.querySelector(".fa-arrow-left").contains(event.target) ===
         false &&
@@ -231,6 +231,11 @@ function addListenerModaleAdd() {
       }, "200");
     }
   });
+}
+// FONCTION QUI MET LES LISTENER POUR FERMER / ENVOYER LES REQUETES / AFFICHER LES ERREURS
+// DE LA MODALE SUR LAQUELLE ON PEUT AJOUTER UNE PHOTO
+function addListenerModaleAdd() {
+  addCloseReturnListenersModaleAdd();
 
   document
     .querySelector(".btnValiderAddPhoto")
