@@ -320,7 +320,10 @@ function addListenerModale() {
 function theOnchange(event) {
   if (
     document.getElementById("btnAjouterPhoto").files[0].size <
-    4 * 1024 * 1024
+      4 * 1024 * 1024 &&
+    (document.getElementById("btnAjouterPhoto").files[0].type ===
+      "image/jpeg" ||
+      document.getElementById("btnAjouterPhoto").files[0].type === "image/png")
   ) {
     let ajouterphoto = document.querySelector(".ajouterphoto");
     let newPhoto = document.createElement("img");
