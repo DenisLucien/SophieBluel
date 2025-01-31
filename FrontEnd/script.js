@@ -1,9 +1,10 @@
 // DEFINITION DES FONCTIONS DE NOTRE CODE
 
-var ajouterphotohtml;
+var ajouterphotohtml; //
 var lesCategories;
-var disWorks;
-var tabWorks;
+var disWorks; //Works qui vont évoluer au fur et à 
+// mesure que des changements sont effectués
+var tabWorks; // Works de départ
 
 //Une variable d'état du btnValiderAddPhoto
 //Comme ce n'est pas un bouton submit il peut y avoir
@@ -186,6 +187,89 @@ function addListenerLogin() {
   });
 }
 
+// Les listeners des boutons d'edit qui ouvrent la modale
+function addListenerEditBtn() {
+  const bannerEditDiv = document.querySelector(".on");
+  const projetEditDiv = document.querySelector(".mesprojets");
+
+  bannerEditDiv.addEventListener("click", function (event) {
+    document.querySelector(".modaleGal").className = "modaleGal modalon";
+    addListenerModale();
+    document.querySelector(".body").className = "body bodyOn";
+    document.querySelector(".divBody").className = "divBody divBodyOn";
+  });
+  projetEditDiv.addEventListener("click", function (event) {
+    document.querySelector(".modaleGal").className = "modaleGal modalon";
+    addListenerModale();
+    document.querySelector(".body").className = "body bodyOn";
+    document.querySelector(".divBody").className = "divBody divBodyOn";
+  });
+}
+
+//Fonction qui adapte l'affichage en fonction de si l'on est connecté ou non
+//ATTENTION: ELLE AJOUTE EGALEMENT LE LISTENER AU BOUTON EDIT QUI AFFICHE LA MODALE
+function adaptLoginLogout() {
+  //Si on est déconnecté
+  if (
+    localStorage.getItem("logintoken") === "" ||
+    localStorage.getItem("logintoken") === null
+  ) {
+    if (document.body.className !== "loginbody") {
+      document.querySelector(".logbanner").className = "off";
+      document.querySelector(".editPrj").className = "off";
+      document.querySelector(".filters").className = "filters filterson";
+    }
+    document.querySelector("nav a").innerText = "login";
+  }
+  //Si on est connecté
+  else {
+    if (document.body.className !== "loginbody") {
+      document.querySelector(".logbanner").className = "logbanner on";
+      document.querySelector(".filters").className = "filters off";
+      addListenerEditBtn();
+    }
+    document.querySelector("nav a").innerText = "logout";
+  }
+}
+
+function addEventListenerLogout() {
+  const boutonLog = document.querySelector("nav a");
+  boutonLog.addEventListener("click", async function (event) {
+    if (document.querySelector("nav a").innerText === "logout") {
+      event.preventDefault();
+      window.location.href = "index.html";
+      localStorage.removeItem("logintoken");
+    }
+  });
+}
+
+function addListenerModale() {
+  document.querySelector(".xMark").addEventListener("click", function (event) {
+    document.querySelector(".modaleGal").className = "modaleGal off";
+    document.querySelector(".body").className = "body bodyOff";
+    document.querySelector(".divBody").className = "divBody divBodyOff";
+  });
+
+  document.addEventListener("click", function (event) {
+    if (
+      document.querySelector(".modaleGal").contains(event.target) === false &&
+      document.querySelector(".editPrj").contains(event.target) === false &&
+      document.querySelector(".logbanner").contains(event.target) === false &&
+      document.querySelector(".addPhoto").className === "addPhoto off"
+    ) {
+      document.querySelector(".modaleGal").className = "modaleGal off";
+      document.querySelector(".body").className = "body bodyOff";
+      document.querySelector(".divBody").className = "divBody divBodyOff";
+    }
+  });
+  document
+    .querySelector(".btnAddPhoto")
+    .addEventListener("click", async function (event) {
+      document.querySelector(".addPhoto").className = "addPhoto addPhotoOn";
+      addListenerModaleAdd();
+    });
+}
+
 function addCloseReturnListenersModaleAdd() {
   document
     .querySelector(".xMarkPhoto")
@@ -283,39 +367,6 @@ function addListenerModaleAdd() {
 }
 // FIN DE LA FONCTION addListenerModaleAdd
 
-function addListenerModale() {
-  document.querySelector(".xMark").addEventListener("click", function (event) {
-    document.querySelector(".modaleGal").className = "modaleGal off";
-    document.querySelector(".body").className = "body bodyOff";
-    document.querySelector(".divBody").className = "divBody divBodyOff";
-  });
-
-  document.addEventListener("click", function (event) {
-    if (
-      document.querySelector(".modaleGal").contains(event.target) === false &&
-      document.querySelector(".editPrj").contains(event.target) === false &&
-      document.querySelector(".logbanner").contains(event.target) === false &&
-      document.querySelector(".addPhoto").className === "addPhoto off"
-    ) {
-      document.querySelector(".modaleGal").className = "modaleGal off";
-      document.querySelector(".body").className = "body bodyOff";
-      document.querySelector(".divBody").className = "divBody divBodyOff";
-    }
-  });
-  document
-    .querySelector(".btnAddPhoto")
-    .addEventListener("click", async function (event) {
-      document.querySelector(".addPhoto").className = "addPhoto addPhotoOn";
-      addListenerModaleAdd();
-    });
-
-  document
-    .querySelector(".btnAjouterPhoto")
-    .addEventListener("onchange", function (event) {
-      newPhoto.src = document.querySelector(".btnAjouterPhoto").value;
-    });
-}
-
 //Fonction lors de l'upload de l'image qui affiche la prévisualisation
 function theOnchange(event) {
   if (
@@ -344,60 +395,7 @@ function theOnchange(event) {
   }
 }
 
-function addListenerEditBtn() {
-  const bannerEditDiv = document.querySelector(".on");
-  const projetEditDiv = document.querySelector(".mesprojets");
 
-  bannerEditDiv.addEventListener("click", function (event) {
-    document.querySelector(".modaleGal").className = "modaleGal modalon";
-    addListenerModale();
-    document.querySelector(".body").className = "body bodyOn";
-    document.querySelector(".divBody").className = "divBody divBodyOn";
-  });
-  projetEditDiv.addEventListener("click", function (event) {
-    document.querySelector(".modaleGal").className = "modaleGal modalon";
-    addListenerModale();
-    document.querySelector(".body").className = "body bodyOn";
-    document.querySelector(".divBody").className = "divBody divBodyOn";
-  });
-}
-
-//Fonction qui adapte l'affichage en fonction de si l'on est connecté ou non
-//ATTENTION: ELLE AJOUTE EGALEMENT LE LISTENER AU BOUTON EDIT QUI AFFICHE LA MODALE
-function adaptLoginLogout() {
-  //Si on est déconnecté
-  if (
-    localStorage.getItem("logintoken") === "" ||
-    localStorage.getItem("logintoken") === null
-  ) {
-    if (document.body.className !== "loginbody") {
-      document.querySelector(".logbanner").className = "off";
-      document.querySelector(".editPrj").className = "off";
-      document.querySelector(".filters").className = "filters filterson";
-    }
-    document.querySelector("nav a").innerText = "login";
-  }
-  //Si on est connecté
-  else {
-    if (document.body.className !== "loginbody") {
-      document.querySelector(".logbanner").className = "logbanner on";
-      document.querySelector(".filters").className = "filters off";
-      addListenerEditBtn();
-    }
-    document.querySelector("nav a").innerText = "logout";
-  }
-}
-
-function addEventListenerLogout() {
-  const boutonLog = document.querySelector("nav a");
-  boutonLog.addEventListener("click", async function (event) {
-    if (document.querySelector("nav a").innerText === "logout") {
-      event.preventDefault();
-      window.location.href = "index.html";
-      localStorage.removeItem("logintoken");
-    }
-  });
-}
 
 // UTILISATION D'UNE FONCTION ANONYME AUTO INVOQUEE POUR UTILISER AWAIT DANS
 // NOTRE CODE, ELLE COMPORTE LE CODE A EXECUTER
