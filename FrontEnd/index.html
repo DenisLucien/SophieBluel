@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <meta charset="UTF-8" >
+    <meta charset="UTF-8" />
     <title>Sophie Bluel - Architecte d'intérieur</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" >
-    <link rel="preconnect" href="https://fonts.googleapis.com" >
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap"
       rel="stylesheet"
-    >
+    />
     <script
       src="https://kit.fontawesome.com/17c0a42264.js"
       crossorigin="anonymous"
     ></script>
-    <meta name="description" content="" >
-    <link rel="stylesheet" href="./assets/style.css" >
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="./assets/style.css" />
     <script src="script.js" defer></script>
   </head>
 
   <body class="body">
-    <div class="logbanner">
+    <div class="logbanner off">
       <i class="fa-regular fa-pen-to-square"></i>
       <p>Mode édition</p>
     </div>
@@ -57,14 +57,14 @@
             name="btnAjouterPhoto"
             accept="image/png, image/jpeg"
             onchange="theOnchange(event)"
-          >
+          />
         </label>
         <p>jpg, png : 4mo max</p>
       </div>
 
       <div class="labelinput">
         <label for="titre">Titre</label>
-        <input type="text" name="titre" id="titre" >
+        <input type="text" name="titre" id="titre" />
         <label for="categorie">Catégorie</label>
         <select name="categorie" id="categorie">
           <option value="">Sélectionnez une catégorie</option>
@@ -85,14 +85,14 @@
             <li>projets</li>
             <li>contact</li>
             <li><a href="login.html" title="bouton connection">login</a></li>
-            <li><img src="./assets/icons/instagram.png" alt="Instagram" ></li>
+            <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
           </ul>
         </nav>
       </header>
       <main>
         <section id="introduction">
           <figure>
-            <img src="./assets/images/sophie-bluel.png" alt="" >
+            <img src="./assets/images/sophie-bluel.png" alt="" />
           </figure>
           <article>
             <h2>Designer d'espace</h2>
@@ -116,25 +116,23 @@
         <section id="portfolio">
           <div class="mesprojets">
             <h2>Mes Projets</h2>
-            <div class="editPrj">
+            <div class="editPrj off">
               <i class="fa-regular fa-pen-to-square"></i>
               <span>modifier</span>
             </div>
           </div>
 
           <div class="filters filterson"></div>
-          <div class="gallery">
-            <p>un exemple de contenu à supprimer</p>
-          </div>
+          <div class="gallery"></div>
         </section>
         <section id="contact">
           <h2>Contact</h2>
           <p>Vous avez un projet ? Discutons-en !</p>
           <form action="#" method="post">
             <label for="name">Nom</label>
-            <input type="text" name="name" id="name" >
+            <input type="text" name="name" id="name" />
             <label for="email">Email</label>
-            <input type="email" name="email" id="email" >
+            <input type="email" name="email" id="email" />
             <label for="message">Message</label>
             <textarea
               name="message"
@@ -142,7 +140,7 @@
               cols="30"
               rows="10"
             ></textarea>
-            <input type="submit" value="Envoyer" >
+            <input type="submit" value="Envoyer" />
           </form>
         </section>
       </main>

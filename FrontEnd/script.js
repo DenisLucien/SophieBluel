@@ -2,7 +2,7 @@
 
 var ajouterphotohtml; //
 var lesCategories;
-var disWorks; //Works qui vont évoluer au fur et à 
+var disWorks; //Works qui vont évoluer au fur et à
 // mesure que des changements sont effectués
 var tabWorks; // Works de départ
 
@@ -225,6 +225,7 @@ function adaptLoginLogout() {
   else {
     if (document.body.className !== "loginbody") {
       document.querySelector(".logbanner").className = "logbanner on";
+      document.querySelector(".editPrj").className = "editPrj";
       document.querySelector(".filters").className = "filters off";
       addListenerEditBtn();
     }
@@ -394,8 +395,6 @@ function theOnchange(event) {
     document.querySelector(".ajouterphoto p").style.color = "rgb(104, 13, 13)";
   }
 }
-
-
 
 // UTILISATION D'UNE FONCTION ANONYME AUTO INVOQUEE POUR UTILISER AWAIT DANS
 // NOTRE CODE, ELLE COMPORTE LE CODE A EXECUTER
